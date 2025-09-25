@@ -12,17 +12,17 @@ import java.util.Properties;
 public class postgis_Kartoza_postgis {
 
     @Test(priority = 1)
-    public void postgis_Kartoza_postgis() {
+    public void postgis_Kartoza_postgis_Status() {
 
         String vmIpAddress = "172.20.23.157";
         String username = "appUser";
         String password = "Brain@123";
-        String containerId = "54c6173f613c";
+        String containerName = "postgres_dbbackups";  // ✅ using docker name instead of ID
 
-        System.out.println("postgis_Kartoza_postgis Docker ID = " + containerId);
+        System.out.println("postgis_Kartoza_postgis Docker Name = " + containerName);
 
-        if (containerId.isEmpty()) {
-            System.out.println("Container ID is required.");
+        if (containerName.isEmpty()) {
+            System.out.println("Container name is required.");
             return;
         }
 
@@ -33,9 +33,9 @@ public class postgis_Kartoza_postgis {
             session.setConfig("StrictHostKeyChecking", "no");
             session.connect();
 
-            // Execute the docker inspect command to check the container's status
+            // ✅ Inspect container by name instead of ID
             ChannelExec channel = (ChannelExec) session.openChannel("exec");
-            channel.setCommand("docker inspect --format='{{.State.Status}}' " + containerId);
+            channel.setCommand("docker inspect --format='{{.State.Status}}' " + containerName);
             channel.setInputStream(null);
             channel.setErrStream(System.err);
             BufferedReader reader = new BufferedReader(new InputStreamReader(channel.getInputStream()));
@@ -56,7 +56,7 @@ public class postgis_Kartoza_postgis {
 
             // If container is not running, send alert
             if (!isRunning) {
-                sendEmailAlert("Hi,\n\n🚨 This is postgis_Kartoza_postgis Docker. I am currently down. Kindly restart the container at your earliest convenience.");
+                sendEmailAlert("Hi,\n\n🚨 This is `postgres_dbbackups` (postgis_Kartoza_postgis) Docker. I am currently down. Kindly restart the container at your earliest convenience.");
                 assert false : "Container is not in the expected state.";
             }
 
@@ -82,7 +82,7 @@ public class postgis_Kartoza_postgis {
             "gayathri@htic.iitm.ac.in"
         };
 
-        String subject = "Docker Container Alert - postgis_Kartoza_postgis";
+        String subject = "Docker Container Alert - postgres_dbbackups (postgis_Kartoza_postgis)";
         final String username = "automationsoftware25@gmail.com";
         final String password = "wjzcgaramsqvagxu"; // App-specific password
 
@@ -122,4 +122,3 @@ public class postgis_Kartoza_postgis {
         }
     }
 }
-
