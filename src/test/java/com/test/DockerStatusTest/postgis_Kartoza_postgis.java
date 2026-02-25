@@ -15,8 +15,8 @@ public class postgis_Kartoza_postgis {
     public void postgis_Kartoza_postgis_Status() {
 
         String vmIpAddress = "172.20.23.157";
-        String username = "appUser";
-        String password = "Brain@123";
+        String username = "hbp";
+        String password = "hbpsgbclab@123";
         String containerName = "postgres_dbbackups";  // ✅ using docker name instead of ID
 
         System.out.println("postgis_Kartoza_postgis Docker Name = " + containerName);
@@ -122,3 +122,4 @@ public class postgis_Kartoza_postgis {
         }
     }
 }
+
